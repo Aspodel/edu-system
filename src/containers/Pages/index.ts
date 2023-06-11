@@ -1,0 +1,9 @@
+export { default as RoomPage } from "./Room";
+export { default as LoginPage } from "./Login";
+export { default as CourseRegistrationPage } from "./CourseRegistration";
+export { default as ClassPage } from "./Class";
+export { default as ClassDetailPage } from "./ClassDetail";
+export { default as MajorProgramPage } from "./MajorProgram";
+export { default as ViewTimetablePage } from "./ViewTimetable";
+export { default as DepartmentPage } from "./Department";
+export { default as DepartmentDetailPage } from "./DepartmentDetail";
