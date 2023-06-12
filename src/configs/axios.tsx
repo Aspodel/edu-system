@@ -54,8 +54,6 @@ const errorHandler = (error: any) => {
   //   }
 
   if (!error.response) {
-    console.log("1");
-
     toast({
       position: "top-right",
       duration: 2000,
@@ -64,7 +62,6 @@ const errorHandler = (error: any) => {
       ),
     });
   } else {
-    // console.log("check");
     const status = error.response.status;
     let errorMessage = "An error occurred.";
 

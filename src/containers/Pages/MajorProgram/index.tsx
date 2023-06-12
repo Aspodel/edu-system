@@ -50,7 +50,7 @@ const data = [
     prerequisite: [],
   },
   {
-    courseCode: "PH001",
+    courseCode: "PH002",
     name: "Physics 2",
     credit: 3,
     gpaCalculate: true,
