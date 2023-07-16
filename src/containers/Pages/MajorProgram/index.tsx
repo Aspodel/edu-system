@@ -79,7 +79,12 @@ function MajorProgramPage() {
 
             <Tbody>
               {data.map((item) => (
-                <Tr key={item.courseCode} onClick={onOpen} cursor="pointer">
+                <Tr
+                  key={item.courseCode}
+                  onClick={onOpen}
+                  cursor="pointer"
+                  _hover={{ bg: "gray.100" }}
+                >
                   <Td>{item.courseCode}</Td>
                   <Td>{item.name}</Td>
                   <Td isNumeric>{item.credit}</Td>

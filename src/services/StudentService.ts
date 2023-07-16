@@ -5,6 +5,8 @@ import { apiClient } from "configs";
 
 interface IStudentServiceModel extends IBaseServiceModel<IStudent> {
   getByDepartment: (departmentId: number) => Promise<IStudent[]>;
+  getUngroup: (classId: number) => Promise<IStudent[]>;
+  exportExcelByClass: (classId: number) => Promise<File>;
   createFromExcel: (file: File) => Promise<IStudent[]>;
   registerCourses: (item: IRegisterCoursesModel) => Promise<void>;
 }
@@ -17,6 +19,16 @@ export function StudentService(): IStudentServiceModel {
 
   async function getByDepartment(departmentId: number) {
     const response = await apiClient.get(`${path}/department/${departmentId}`);
+    return response?.data;
+  }
+
+  async function getUngroup(classId: number) {
+    const response = await apiClient.get(`${path}/ungroup/${classId}`);
+    return response?.data;
+  }
+
+  async function exportExcelByClass(classId: number) {
+    const response = await apiClient.get(`${path}/class/${classId}`);
     return response?.data;
   }
 
@@ -42,6 +54,8 @@ export function StudentService(): IStudentServiceModel {
     update,
     remove,
     getByDepartment,
+    getUngroup,
+    exportExcelByClass,
     createFromExcel,
     registerCourses,
   };

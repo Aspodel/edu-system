@@ -7,3 +7,4 @@ export { default as MajorProgramPage } from "./MajorProgram";
 export { default as ViewTimetablePage } from "./ViewTimetable";
 export { default as DepartmentPage } from "./Department";
 export { default as DepartmentDetailPage } from "./DepartmentDetail";
+export { default as GradesPage } from "./Grades";

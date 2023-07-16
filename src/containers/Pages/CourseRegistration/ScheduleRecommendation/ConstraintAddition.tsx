@@ -98,7 +98,7 @@ function ConstraintAddition({ onAddConstraint }: IConstraintAdditionProps) {
 
       <TabPanels>
         <TabPanel>
-          <Grid templateColumns="repeat(7, 1fr)" gap={1} m="0 40px">
+          <Grid templateColumns="repeat(7, 1fr)" gap={1} m="0 140px">
             {/* Header row */}
             <GridItem textAlign="center" bg="gray.200" p={2} />
             {WEEKDAYS.map((day) => (

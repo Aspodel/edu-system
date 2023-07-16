@@ -11,22 +11,15 @@ import {
   ViewTimetablePage,
   DepartmentPage,
   DepartmentDetailPage,
+  GradesPage,
 } from "containers";
-import {
-  AiOutlineHome,
-  AiOutlineInsertRowBelow,
-  AiOutlineShop,
-  AiOutlineTable,
-  AiOutlineCalendar,
-  AiOutlineReconciliation,
-  AiOutlineBook,
-} from "react-icons/ai";
 import {
   CiBank,
   CiBoxes,
   CiCalendar,
   CiCoins1,
   CiLogout,
+  CiMedal,
   CiMedicalClipboard,
   CiShop,
   CiViewBoard,
@@ -39,16 +32,13 @@ export const routePath = {
   Login: "login",
 
   Dashboard: "dashboard",
-
   MajorProgram: "major-program",
   CourseRegistration: "course-registration",
-
   TimeTable: "time-table",
-
   Class: "class",
-
   Deparment: "deparment",
   Room: "room",
+  Grades: "grades",
 };
 
 export const routeConfigs: RouteObject[] = [
@@ -73,8 +63,8 @@ export const routeConfigs: RouteObject[] = [
         ],
       },
       {
-        path: routePath.Room,
-        element: <RoomPage />,
+        path: routePath.Grades,
+        element: <GradesPage />,
       },
       {
         path: routePath.CourseRegistration,
@@ -145,9 +135,9 @@ export const sidebarConfigs = [
     name: "Major Program",
     icon: CiViewBoard,
   },
-  // {
-  //   path: routePath.Login,
-  //   name: "Log out",
-  //   icon: CiLogout,
-  // },
+  {
+    path: routePath.Grades,
+    name: "Grades",
+    icon: CiMedal,
+  },
 ];

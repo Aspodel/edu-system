@@ -1,4 +1,11 @@
-import { DayOfWeek, Role } from "../utils/enum";
+import {
+  AssignmentType,
+  DayOfWeek,
+  DiscussionType,
+  MessageType,
+  QuestionType,
+  Role,
+} from "../utils/enum";
 
 export interface IDTO<T = number> {
   id?: T;
@@ -26,6 +33,7 @@ export interface IStudent extends IUser {
   supervisorId?: string;
   registeredClasses?: number[];
   grades?: IGrade[];
+  tasks?: IStudentTask[];
 }
 
 export interface ILecturer extends IUser {
@@ -59,12 +67,23 @@ export interface IClass extends IDTO {
 
   students: IStudentClass[];
   gradeColumns: IGradeColumn[];
+  course?: ICourse;
 }
 
 export interface IStudentClass {
   studentId: string;
   classId: number;
   groupId?: number;
+  student?: IStudent;
+  class?: IClass;
+  group?: IGroup;
+}
+
+export interface IStudentTask {
+  studentId: string;
+  toDoItemId: number;
+  student?: IStudent;
+  toDoItem?: IToDoItem;
 }
 
 export interface ICourse extends IDTO {
@@ -91,13 +110,20 @@ export interface IDepartment extends IDTO {
 
 export interface IDiscussion extends IDTO {
   title: string;
-  type?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  description?: string;
+  type: DiscussionType;
+  createdAt?: Date;
+  updatedAt?: Date;
+  groupId?: number;
+  classId: number;
+  creatorId?: string;
+  creator?: IUser;
+  messages?: IMessage[];
+  participants: IUser[];
 }
 
 export interface IGrade extends IDTO {
-  value: number;
+  value?: number;
   gradeColumnId: number;
   studentId: string;
 }
@@ -106,6 +132,7 @@ export interface IGradeColumn extends IDTO {
   name: string;
   isPublished?: boolean;
   percentage: number;
+  order?: number;
   classId: number;
   grades?: IGrade[];
 }
@@ -113,6 +140,7 @@ export interface IGradeColumn extends IDTO {
 export interface IGroup extends IDTO {
   name: string;
   projectName: string;
+  students: IStudentClass[];
 }
 
 export interface IMajor extends IDTO {
@@ -125,10 +153,11 @@ export interface IMajor extends IDTO {
 
 export interface IMessage extends IDTO {
   content: string;
-  type?: number;
-  createdAt: Date;
+  type?: MessageType;
+  createdAt?: Date;
   discussionId: number;
   senderId: string;
+  sender?: IUser;
 }
 
 export interface INotification extends IDTO {
@@ -147,6 +176,93 @@ export interface IRoom extends IDTO {
   building: string;
   seat?: number;
 }
+
+export interface IToDoItem extends IDTO {
+  title: string;
+  description?: string;
+  isCompleted?: boolean;
+  createdAt?: Date;
+  deadline?: Date;
+  completedAt?: Date;
+  toDoListId: number;
+  students: IStudentTask[];
+}
+
+export interface IToDoList extends IDTO {
+  title: string;
+  description?: string;
+  groupId?: number;
+  items?: IToDoItem[];
+}
+
+export interface IAssignment extends IDTO {
+  title: string;
+  description?: string;
+  assignmentType: AssignmentType;
+  createdAt: Date;
+  dueDate?: Date;
+  publishDate?: Date;
+  answerPublishDate?: Date;
+  classId: number;
+  gradeColumnId?: number;
+  questions?: IQuestion[];
+  submissions?: ISubmission[];
+}
+
+export interface ICreateAssignmentModel {
+  title: string;
+  description?: string;
+  assignmentType: AssignmentType;
+  dueDate?: Date;
+  publishDate?: Date;
+  answerPublishDate?: Date;
+  classId: number;
+  gradeColumnId?: number;
+  questions?: IQuestion[];
+}
+
+export interface IQuestion extends IDTO {
+  content: string;
+  questionType: QuestionType;
+  points: number;
+  assignmentId: number;
+  assignment?: IAssignment;
+  correctAnswerId?: number;
+  correctAnswer?: IAnswer;
+  answers?: IAnswer[];
+}
+
+export interface IAnswer extends IDTO {
+  content: string;
+  explanation?: string;
+  questionId: number;
+  question?: IQuestion;
+}
+
+export interface ISubmission extends IDTO {
+  createdAt: Date;
+  description?: string;
+  studentId: string;
+  groupId?: number;
+  assignmentId: number;
+}
+
+export interface IFileSubmission extends ISubmission {
+  fileName: string;
+  fileUrl?: string;
+}
+
+export interface ICreateFileSubmissionModel extends IFileSubmission {
+  file: File;
+}
+
+export interface IAnswerSubmission extends ISubmission {
+  answerId: number;
+  answer?: IAnswer;
+  questionId: number;
+  question?: IQuestion;
+}
+
 //#endregion
 
 //#region [Models]
@@ -182,5 +298,41 @@ export interface ITimeSlot {
 export interface IConstraint {
   timeSlots?: ITimeSlot[];
   maxClassPerDay?: number;
+}
+
+export interface IGradeRow {
+  id: string;
+  student: string;
+  grades: Record<string, number | undefined>;
+}
+
+export interface IStudentGrades {
+  course: string;
+  grades: { [key: string]: { percentage: number; value: number | null } };
+}
+
+export interface ICreateGroupModel {
+  name: string;
+  projectName: string;
+  students: string[];
+}
+
+export interface ICreateToDoItemModel extends IDTO {
+  title: string;
+  description?: string;
+  isCompleted?: boolean;
+  deadline?: Date;
+  toDoListId: number;
+  students: string[];
+}
+
+export interface ICreateDiscussionModel {
+  title: string;
+  description?: string;
+  type: DiscussionType;
+  groupId?: number;
+  classId: number;
+  creatorId?: string;
+  // participants: string[];
 }
 //#endregion

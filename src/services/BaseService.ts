@@ -22,6 +22,7 @@ export interface IBaseServiceModel<T> {
   getDetails: (id: number | string) => Promise<T>;
   create: (item: T) => Promise<T> | Promise<void>;
   update: (item: T) => Promise<void>;
+  // updateRange: (items: T[]) => Promise<void>;
   remove: (id: number | string) => Promise<void>;
 }
 
@@ -45,6 +46,10 @@ export function BaseService<T extends IDTO<number | string>>({
 
   async function update(item: T) {
     await apiClient.put(`${controllerPath}`, item);
+  }
+
+  async function updateRange(items: T[]) {
+    await apiClient.put(`${controllerPath}`, items);
   }
 
   async function remove(id: number | string) {

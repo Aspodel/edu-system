@@ -127,6 +127,7 @@ function CourseRegistrationPage() {
             placeholder="Search course"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            autoFocus
           />,
           <Button key="recommendBtn" onClick={onOpen}>
             Recommend

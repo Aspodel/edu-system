@@ -17,7 +17,7 @@ export function AuthService(): IAuthServiceModel {
   );
 
   function setUserInfor(userInfoData?: ICurrentUser) {
-    console.log("setUserInfor", userInfoData);
+    // console.log("setUserInfor", userInfoData);
     userInfoData && (userInfoData.role = userInfoData.roles[0]);
     saveUserInforToStorage(userInfoData);
     setUserInforState(userInfoData);
@@ -28,7 +28,7 @@ export function AuthService(): IAuthServiceModel {
       `${controllerPath}/login`,
       model
     );
-    console.log("Login data response", response.data.data);
+    // console.log("Login data response", response.data.data);
     setUserInfor(response.data.data);
   }
 
@@ -40,14 +40,14 @@ export function AuthService(): IAuthServiceModel {
 }
 
 function getUserInforFromStorage(): ICurrentUser | undefined {
-  console.log("getUserInforFromStorage");
+  // console.log("getUserInforFromStorage");
   const credential = localStorage.getItem(CREDENTIAL_LOCALSTORAGE_KEY);
 
   return credential ? JSON.parse(credential) : undefined;
 }
 
 function saveUserInforToStorage(infor: ICurrentUser | undefined) {
-  console.log("saveUserInforToStorage", infor);
+  // console.log("saveUserInforToStorage", infor);
   infor
     ? localStorage.setItem(CREDENTIAL_LOCALSTORAGE_KEY, JSON.stringify(infor))
     : localStorage.removeItem(CREDENTIAL_LOCALSTORAGE_KEY);

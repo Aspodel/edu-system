@@ -80,8 +80,8 @@ function CourseSelection({ onCourseSelect }: ICourseSelectionProps) {
               </Th>
               <Th>Code</Th>
               <Th>Course</Th>
-              <Th>Department</Th>
               <Th isNumeric>Classes</Th>
+              <Th>Department</Th>
             </Tr>
           </Thead>
 
@@ -103,13 +103,13 @@ function CourseSelection({ onCourseSelect }: ICourseSelectionProps) {
                     </Td>
                     <Td>{course.courseCode}</Td>
                     <Td w="460px">{course.name}</Td>
+                    <Td w="160px" isNumeric>{course.classes?.length}</Td>
                     <Td>
                       {
                         deparments.find((dep) => dep.id == course.departmentId)
                           ?.name
                       }
                     </Td>
-                    <Td isNumeric>{course.classes?.length}</Td>
                   </Tr>
                 );
               })}

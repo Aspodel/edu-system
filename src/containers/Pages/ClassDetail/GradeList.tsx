@@ -12,38 +12,88 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { BsChevronRight } from "react-icons/bs";
 import ColumnModal from "./ColumnModal";
-import { IGradeColumn, IStudent } from "interfaces";
-import { GradeColumnService } from "services";
+import { IGradeColumn, IGradeRow, IStudent } from "interfaces";
+import { GradeColumnService, GradeService } from "services";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "utils/constants";
+import { UploadButton } from "components";
+import { useToast } from "hooks";
 
-interface IGradeListProps {
-  students: IStudent[];
-}
+interface IGradeListProps {}
 
-function GradeList({ students }: IGradeListProps) {
+function GradeList({}: IGradeListProps) {
   const { id } = useParams<{ id: string }>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [gradeColumns, setGradeColumns] = React.useState<IGradeColumn[]>([]);
+  const [gradeTable, setGradeTable] = React.useState<IGradeRow[]>([]);
+  const [isReload, setIsReload] = React.useState<boolean>(false);
+  const toast = useToast();
 
   React.useEffect(() => {
     const fetchData = async () => {
       const response = await GradeColumnService().getByClass(Number(id));
       setGradeColumns(response);
-      console.log(response);
+      const gradeTable = await GradeService().getByClass(Number(id));
+      setGradeTable(gradeTable);
+      setIsReload(false);
     };
     fetchData();
-  }, []);
+  }, [isOpen, isReload]);
+
+  const calculateAverageGrade = (row: IGradeRow): string => {
+    let weightedSum = 0;
+    let totalWeight = 0;
+
+    for (const column of gradeColumns) {
+      const grade = row.grades[column.name] as number | undefined;
+      if (grade === null || grade === undefined) {
+        return "-";
+      }
+      const percentage = column.percentage || 0;
+      weightedSum += grade * (percentage / 100);
+      totalWeight += percentage;
+    }
+
+    const averageGrade =
+      totalWeight !== 0 ? ((weightedSum / totalWeight) * 100).toFixed(2) : "-";
+
+    return averageGrade;
+  };
+
+  const handleUpload = async (file: File) => {
+    // try {
+      const newGrades = await GradeService().createFromExcel(Number(id), file);
+      setIsReload(!isReload);
+      toast({
+        content: "Upload successfully",
+        type: "Success",
+      });
+    // } catch (err: any) {
+    //   toast({
+    //     content: err.message,
+    //     type: "Error",
+    //   });
+    // }
+  };
 
   return (
     <ContainerLayout
       title="Grade List"
       btnList={[
+        <Button key={Math.random()} colorScheme="gray">
+          <a
+            href={`${BASE_URL}grade/export/class/${Number(id)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Export
+          </a>
+        </Button>,
         <Button variant="solid" colorScheme="gray" onClick={onOpen}>
           Edit column
         </Button>,
-        <Button>Upload Excel</Button>,
+        <UploadButton onUpload={handleUpload} />,
       ]}
     >
       <ColumnModal isOpen={isOpen} onClose={onClose} />
@@ -59,49 +109,27 @@ function GradeList({ students }: IGradeListProps) {
                 </Th>
               ))}
               <Th isNumeric>Ave.</Th>
-              <Th isNumeric>Grade</Th>
             </Tr>
           </Thead>
 
           <Tbody>
-            {students.map((student) => {
-              let weightedSum = 0;
-              let totalWeight = 0;
-
-              // Calculate the weighted sum and total weight
-              gradeColumns.forEach((column) => {
-                const grade = (column.grades || []).find(
-                  (grade) => grade.studentId === student.id
-                );
-                const percentage = column.percentage || 0;
-                weightedSum += (grade ? grade.value : 0) * (percentage / 100);
-                totalWeight += percentage;
-              });
-
-              // Calculate the average grade based on weighted sum and total weight
-              const averageGrade =
-                totalWeight !== 0 ? (weightedSum / totalWeight) * 100 : "-";
-
+            {gradeTable.map((row) => {
               return (
-                <Tr
-                  key={student.idCard}
-                  _hover={{ bg: "gray.100" }}
-                  cursor="pointer"
-                  role="group"
-                >
-                  <Td>{student.idCard}</Td>
-                  <Td>{student.firstName + " " + student.lastName}</Td>
+                <Tr key={Math.random()}>
+                  <Td>{row.id}</Td>
+                  <Td>{row.student}</Td>
                   {gradeColumns.map((column) => {
+                    // console.log(column.name, row);
                     return (
                       <Td isNumeric key={Math.random()}>
-                        {(column.grades || []).find(
-                          (grade) => grade.studentId === student.id
-                        )?.value ?? "-"}
+                        {row.grades[column.name] !== undefined &&
+                        column.isPublished
+                          ? row.grades[column.name]
+                          : "-"}
                       </Td>
                     );
                   })}
-                  <Td isNumeric>{averageGrade}</Td>
-                  <Td isNumeric>-</Td>
+                  <Td isNumeric>{calculateAverageGrade(row)}</Td>
                 </Tr>
               );
             })}

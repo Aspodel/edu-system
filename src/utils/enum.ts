@@ -13,3 +13,23 @@ export enum Role {
   Student = "student",
   Lecturer = "lecturer",
 }
+
+export enum AssignmentType {
+  File,
+  Question,
+}
+
+export enum QuestionType {
+  MultipleChoice,
+  ShortAnswer,
+  LongAnswer,
+}
+
+export enum DiscussionType {
+  Question,
+  Chat,
+}
+
+export enum MessageType{
+  Text,
+}

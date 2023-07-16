@@ -1,5 +1,6 @@
 export const BASE_URL = "https://localhost:7264/api/";
 export const CREDENTIAL_LOCALSTORAGE_KEY = "credential";
+export const BLOB_URL = "https://eduassistantblob.blob.core.windows.net/submission";
 
 export const WEEKDAYS = [
   "Monday",

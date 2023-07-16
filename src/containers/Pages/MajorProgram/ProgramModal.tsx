@@ -15,9 +15,9 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { ModalBox } from "components";
-import DiscussionBoard from "../ClassDetail/DiscussionBoard";
+import DiscussionBoard from "../ClassDetail/Discussion/DiscussionBoard";
 import GradeList from "../ClassDetail/GradeList";
-import GroupList from "../ClassDetail/GroupList";
+import GroupList from "../ClassDetail/Group/GroupList";
 import MemberList from "../ClassDetail/MemberList";
 
 interface CourseProgram {

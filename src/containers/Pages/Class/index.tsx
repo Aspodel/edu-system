@@ -91,7 +91,7 @@ function ClassPage() {
                     onClick={() => handleClick(cl.id!)}
                   >
                     <Td>{cl.classCode}</Td>
-                    <Td>{cl.courseId}</Td>
+                    <Td>{cl.course?.name}</Td>
                     <Td>
                       {
                         lecturers.find(

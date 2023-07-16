@@ -10,7 +10,6 @@ interface INavItemProps {
 }
 
 function NavItem({ path, name, icon }: INavItemProps) {
-  
   return (
     <NavLink
       end={path === "/" ? true : false}
@@ -18,15 +17,16 @@ function NavItem({ path, name, icon }: INavItemProps) {
       style={({ isActive }) => {
         return {
           width: "100%",
-          backgroundColor: isActive ? "#efefef" : "transparent",
+          backgroundColor: isActive ? "#E5F0FF" : "transparent",
           padding: "12px 10px",
           borderRadius: "8px",
+          color: isActive ? "#4695FF" : "#6F767E",
         };
       }}
     >
       <HStack align="center" spacing="12px">
-        <Icon as={icon} color="#6F767E" boxSize={7} />
-        <Text fontSize="16px" fontWeight="600" color="#6F767E">
+        <Icon as={icon} boxSize={7} />
+        <Text fontSize="16px" fontWeight="600">
           {name}
         </Text>
       </HStack>

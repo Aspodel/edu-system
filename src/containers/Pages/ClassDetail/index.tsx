@@ -4,8 +4,8 @@ import { ContainerLayout, PageLayout } from "containers";
 import { useParams } from "react-router-dom";
 import GradeList from "./GradeList";
 import MemberList from "./MemberList";
-import GroupList from "./GroupList";
-import DiscussionBoard from "./DiscussionBoard";
+import GroupList from "./Group/GroupList";
+import DiscussionBoard from "./Discussion/DiscussionBoard";
 import { ClassService, StudentService } from "services";
 import { IClass, IStudent } from "interfaces";
 
@@ -32,7 +32,9 @@ function ClassDetailPage() {
   }, []);
 
   return (
-    <PageLayout title={"Class " + classDetail?.classCode}>
+    <PageLayout
+      title={classDetail?.course?.name + " - Class " + classDetail?.classCode}
+    >
       <Tabs variant="solid-rounded">
         <TabList mb="44px">
           <Tab>Members</Tab>
@@ -46,7 +48,7 @@ function ClassDetailPage() {
             <MemberList students={students} />
           </TabPanel>
           <TabPanel p="0">
-            <GradeList students={students} />
+            <GradeList />
           </TabPanel>
           <TabPanel p="0">
             <GroupList />
