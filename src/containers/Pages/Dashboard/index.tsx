@@ -173,7 +173,7 @@ function DashboardPage() {
               >
                 <ListIcon as={AiFillSetting} color="blue.200" />
                 <Link
-                  href={`http://localhost:3000/class/${classItem.id}`}
+                  href={`https://edu-assistant.netlify.app/class/${classItem.id}`}
                   color="blue.500"
                 >
                   {classItem.course?.name +
