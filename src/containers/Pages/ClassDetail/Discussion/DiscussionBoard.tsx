@@ -13,85 +13,56 @@ import {
 } from "@chakra-ui/react";
 import DiscussionModal from "./DiscussionModal";
 import {
+  DiscussionService,
   sendMessage,
-  sendToSpecificUser,
   startConnection,
   stopConnection,
 } from "services";
 import { useAuth } from "contexts";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
-
-const data = [
-  {
-    id: "1",
-    title: "How to use this framework?",
-    createdAt: "3 minutes ago",
-    createdBy: "Harry Potter",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies ultricies, nisl nisl ultricies nisl, nec ultricies nisl nisl nec nisl. Donec auctor, nisl eget ultricies ultricies, nisl nisl ultricies nisl, nec ultricies nisl nisl nec nisl.",
-  },
-  {
-    id: "2",
-    title: "Where is the main function?",
-    createdAt: "5 minutes ago",
-    createdBy: "Ronald Weasley",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies ultricies, nisl nisl ultricies nisl, nec ultricies nisl nisl nec nisl. Donec auctor, nisl eget ultricies ultricies, nisl nisl ultricies nisl, nec ultricies nisl nisl nec nisl.",
-  },
-];
+import AddDiscussionModal from "./AddDiscussionModal";
+import { IDiscussion } from "interfaces";
+import { useParams } from "react-router-dom";
 
 function DiscussionBoard() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userInfor = useAuth().userInfor;
+  const {
+    isOpen: isOpenAddModal,
+    onOpen: onOpenAddModal,
+    onClose: onCloseAddModal,
+  } = useDisclosure();
+  const { id } = useParams<{ id: string }>();
+  const { userInfor } = useAuth();
+  const [discussions, setDiscussions] = React.useState<IDiscussion[]>([]);
+  const [selectedDiscussion, setSelectedDiscussion] =
+    React.useState<IDiscussion | null>(null);
 
-  // const [connection, setConnection] = React.useState<HubConnection | undefined>(
-  //   undefined
-  // );
-
-  // React.useEffect(() => {
-  //   if (userInfor) {
-  //     console.log(userInfor);
-  //     setConnection(startConnection(userInfor.accessToken));
-  //   }
-  // }, [userInfor]);
-
-  // const handleSendMessage = (message: string) => {
-  //   sendMessage(connection, message);
-  // };
-
-  // const handleSendToSpecificUser = (userId: string, message: string) => {
-  //   sendToSpecificUser(connection, userId, message);
-  // };
-
-  // React.useEffect(() => {
-  //   if (connection) {
-  //     connection.on("ReceiveMessage", (message) => {
-  //       console.log(message);
-  //     });
-  //   }
-  // }, [connection]);
-
-  // React.useEffect(() => {
-  //   return () => {
-  //     stopConnection(connection);
-  //   };
-  // }, [connection]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await DiscussionService().getByClass(Number(id));
+      const filter = response.filter((item) => item.type === 0);
+      setDiscussions(filter);
+    };
+    fetchData();
+  }, [id, isOpenAddModal]);
 
   return (
     <ContainerLayout
       title="Discussion Board"
-      btnList={[<Button key={Math.random()}>Add</Button>]}
+      btnList={[
+        <Button key={Math.random()} onClick={onOpenAddModal}>
+          Add
+        </Button>,
+      ]}
     >
-      <DiscussionModal isOpen={isOpen} onClose={onClose} discussion={data[0]} />
-      {/* <button
-        onClick={() => {
-          handleSendMessage("Testing on the way");
-        }}
-      >
-        Send Message
-      </button> */}
+      <DiscussionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        discussionId={selectedDiscussion}
+      />
+      <AddDiscussionModal isOpen={isOpenAddModal} onClose={onCloseAddModal} />
 
-      {data.map((discussion) => (
+      {discussions.map((discussion) => (
         <VStack
           spacing="8px"
           key={discussion.id}
@@ -101,31 +72,42 @@ function DiscussionBoard() {
           mb="18px"
           borderRadius="10px"
           cursor="pointer"
-          onClick={onOpen}
+          onClick={() => {
+            setSelectedDiscussion(discussion);
+            onOpen();
+          }}
         >
           <HStack spacing="10px">
             <Tag borderRadius="full" variant="solid" fontWeight="semibold">
               question
             </Tag>
-            <Tag borderRadius="full" variant="solid" fontWeight="semibold">
-              code
+            <Tag
+              borderRadius="full"
+              colorScheme="blue"
+              variant="solid"
+              fontWeight="semibold"
+            >
+              New
             </Tag>
           </HStack>
           <Heading size="md">
             <HStack spacing="10px">
               <Text>{discussion.title}</Text>
-              <Tag
+              {/* <Tag
                 fontWeight="semibold"
                 variant="solid"
                 colorScheme="blue"
                 size="lg"
               >
                 New
-              </Tag>
+              </Tag> */}
             </HStack>
           </Heading>
           <Text color="GrayText" fontSize="sm">
-            {discussion.createdAt} by {discussion.createdBy}
+            {discussion.createdAt
+              ? new Date(discussion.createdAt).toLocaleDateString("en-CA")
+              : ""}{" "}
+            by {discussion.creator?.fullName}
           </Text>
         </VStack>
       ))}

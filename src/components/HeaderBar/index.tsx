@@ -6,12 +6,25 @@ import {
   Icon,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useAuth } from "contexts";
+import { IUser } from "interfaces";
 import * as React from "react";
 // import { AiOutlineBell, AiOutlineMessage } from "react-icons/ai";
 import { CiBellOn, CiChat2 } from "react-icons/ci";
+import { StudentService } from "services";
 
 function HeaderBar() {
+  const { userInfor } = useAuth();
+  const [userDetail, setUserDetail] = React.useState<IUser>();
   const color = useColorModeValue("white", "gray.800");
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await StudentService().getDetails(userInfor?.idCard!);
+      setUserDetail(response);
+    };
+    fetchData();
+  }, [userInfor?.id]);
 
   return (
     <Flex
@@ -26,7 +39,7 @@ function HeaderBar() {
     >
       <Icon as={CiChat2} boxSize={7} />
       <Icon as={CiBellOn} boxSize={7} />
-      <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+      <Avatar name={userDetail?.fullName} src={userDetail?.avatar} />
     </Flex>
   );
 }

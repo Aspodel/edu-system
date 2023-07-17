@@ -13,12 +13,19 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Icon,
+  Tbody,
+  Avatar,
+  Table,
+  Td,
+  Tr,
 } from "@chakra-ui/react";
 import { ModalBox } from "components";
 import DiscussionBoard from "../ClassDetail/Discussion/DiscussionBoard";
 import GradeList from "../ClassDetail/GradeList";
 import GroupList from "../ClassDetail/Group/GroupList";
 import MemberList from "../ClassDetail/MemberList";
+import { BsStarFill } from "react-icons/bs";
 
 interface CourseProgram {
   courseCode: string;
@@ -79,7 +86,78 @@ function ProgramModal({ isOpen, onClose, courseProgram }: IProgramModalProps) {
               <Text>{courseProgram.prerequisite.join(", ")} None</Text>
             </Grid>
           </TabPanel>
-          <TabPanel>Updating</TabPanel>
+          <TabPanel>
+            <Flex direction="column">
+              <Flex gap="50px" align="center">
+                <Flex direction="column" gap="15px">
+                  <Heading size="3xl">5</Heading>
+                  <Flex gap="10px">
+                    <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                    <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                    <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                    <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                    <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                  </Flex>
+                  <Box color="gray.500">Based on 1 reviews</Box>
+                </Flex>
+                <Box>
+                  <Flex align="center" gap="10px">
+                    <Box>5</Box>
+                    <Box
+                      h="7px"
+                      w="350px"
+                      borderRadius="35px"
+                      bg="yellow.400"
+                    />
+                  </Flex>
+                  <Flex align="center" gap="10px">
+                    <Box>4</Box>
+                    <Box h="7px" w="350px" borderRadius="35px" bg="gray.300" />
+                  </Flex>
+                  <Flex align="center" gap="10px">
+                    <Box>3</Box>
+                    <Box h="7px" w="350px" borderRadius="35px" bg="gray.300" />
+                  </Flex>
+                  <Flex align="center" gap="10px">
+                    <Box>2</Box>
+                    <Box h="7px" w="350px" borderRadius="35px" bg="gray.300" />
+                  </Flex>
+                  <Flex align="center" gap="10px">
+                    <Box>1</Box>
+                    <Box h="7px" w="350px" borderRadius="35px" bg="gray.300" />
+                  </Flex>
+                </Box>
+              </Flex>
+
+              <Table mt="50px" variant="unstyled">
+                <Tbody>
+                  <Tr>
+                    <Td alignContent="center">
+                      <Flex gap="10px" align="center">
+                        <Avatar src="" name="Peter Pan" />
+                        <Box>
+                          <Heading size="sm">Peter Pan</Heading>
+                          <Text fontSize="sm">ITIT20001</Text>
+                        </Box>
+                      </Flex>
+                    </Td>
+                    <Td alignContent="center">
+                      <Flex gap="10px">
+                        <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                        <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                        <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                        <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                        <Icon color="yellow.400" as={BsStarFill} boxSize={4} />
+                      </Flex>
+                      <Text fontSize="md" mt="5px">
+                        This course is very good
+                      </Text>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </Flex>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </ModalBox>

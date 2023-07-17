@@ -12,13 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { ILoginModel } from "interfaces";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 
 function LoginPage() {
   let navigate = useNavigate();
   let location = useLocation();
-  const { login } = useAuth();
+  const { login, userInfor } = useAuth();
 
   const {
     register,
@@ -34,6 +34,8 @@ function LoginPage() {
       console.log(err);
     }
   };
+
+  if (userInfor) return <Navigate to="/" />;
 
   return (
     <Center height="100%">

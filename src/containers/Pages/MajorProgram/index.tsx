@@ -61,6 +61,25 @@ const data = [
 
 function MajorProgramPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [courseProgram, setCourseProgram] = React.useState<{
+    courseCode: string;
+    name: string;
+    credit: number;
+    gpaCalculate: boolean;
+    department: string;
+    prerequisite: string[];
+    description?: string;
+  }>({
+    courseCode: "IT001",
+    name: "Object Oriented Programming",
+    credit: 4,
+    gpaCalculate: true,
+    department: "IT",
+    prerequisite: [],
+    description:
+      "This course is about object oriented programming. This course is prerequisite for Data Structure and Algorithm and many other courses.",
+  });
+
   return (
     <PageLayout title="Major Program">
       <ContainerLayout title="Computer Science Major">
@@ -81,7 +100,10 @@ function MajorProgramPage() {
               {data.map((item) => (
                 <Tr
                   key={item.courseCode}
-                  onClick={onOpen}
+                  onClick={() => {
+                    setCourseProgram(item);
+                    onOpen();
+                  }}
                   cursor="pointer"
                   _hover={{ bg: "gray.100" }}
                 >
@@ -98,7 +120,11 @@ function MajorProgramPage() {
         </TableContainer>
       </ContainerLayout>
 
-      <ProgramModal isOpen={isOpen} onClose={onClose} courseProgram={data[0]} />
+      <ProgramModal
+        isOpen={isOpen}
+        onClose={onClose}
+        courseProgram={courseProgram}
+      />
     </PageLayout>
   );
 }

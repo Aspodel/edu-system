@@ -8,6 +8,7 @@ import GroupList from "./Group/GroupList";
 import DiscussionBoard from "./Discussion/DiscussionBoard";
 import { ClassService, StudentService } from "services";
 import { IClass, IStudent } from "interfaces";
+import ClassMaterial from "./ClassMaterial";
 
 function ClassDetailPage() {
   let { id } = useParams();
@@ -41,6 +42,7 @@ function ClassDetailPage() {
           <Tab>Grades</Tab>
           <Tab>Groups</Tab>
           <Tab>Discussions</Tab>
+          <Tab>Material</Tab>
         </TabList>
 
         <TabPanels>
@@ -55,6 +57,9 @@ function ClassDetailPage() {
           </TabPanel>
           <TabPanel p="0">
             <DiscussionBoard />
+          </TabPanel>
+          <TabPanel p="0">
+            <ClassMaterial />
           </TabPanel>
         </TabPanels>
       </Tabs>

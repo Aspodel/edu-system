@@ -12,6 +12,8 @@ import {
   DepartmentPage,
   DepartmentDetailPage,
   GradesPage,
+  LecturerInfoPage,
+  DashboardPage,
 } from "containers";
 import {
   CiBank,
@@ -39,6 +41,7 @@ export const routePath = {
   Deparment: "deparment",
   Room: "room",
   Grades: "grades",
+  LecturerInfo: "lecturer-info/:lecturerId",
 };
 
 export const routeConfigs: RouteObject[] = [
@@ -47,7 +50,7 @@ export const routeConfigs: RouteObject[] = [
     children: [
       {
         path: routePath.Root,
-        element: <div></div>,
+        element: <DashboardPage/>,
       },
       {
         path: routePath.Deparment,
@@ -61,6 +64,10 @@ export const routeConfigs: RouteObject[] = [
             element: <DepartmentDetailPage />,
           },
         ],
+      },
+      {
+        path: routePath.LecturerInfo,
+        element: <LecturerInfoPage />,
       },
       {
         path: routePath.Grades,

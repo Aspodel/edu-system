@@ -60,7 +60,7 @@ function GroupDetailModal({
             <GroupTask groupId={groupId!} />
           </TabPanel>
           <TabPanel p="0">
-            <GroupChat groupId={groupId!} />
+            <GroupChat groupId={groupId!} isOpen={isOpen} onClose={onClose} />
           </TabPanel>
           <TabPanel p="0">
             <GroupSubmission groupId={groupId!} />

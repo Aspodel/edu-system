@@ -1,9 +1,10 @@
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { IMessage } from "interfaces";
 
 const startConnection = (token: string): HubConnection => {
   const connection = new HubConnectionBuilder()
-    .withUrl("https://localhost:7264/discussion-hub", {
-      accessTokenFactory: () => token,
+    .withUrl("https://localhost:7264/hub", {
+      // accessTokenFactory: () => token,
     })
     .withAutomaticReconnect()
     .build();
@@ -33,7 +34,7 @@ const stopConnection = (connection?: HubConnection) => {
   }
 };
 
-const sendMessage = async (connection?: HubConnection, message?: string) => {
+const sendMessage = async (connection?: HubConnection, message?: IMessage) => {
   if (connection) {
     try {
       await connection.send("SendMessage", message);
@@ -45,20 +46,5 @@ const sendMessage = async (connection?: HubConnection, message?: string) => {
   }
 };
 
-const sendToSpecificUser = async (
-  connection?: HubConnection,
-  userId?: string,
-  message?: string
-) => {
-  if (connection) {
-    try {
-      await connection.send("SendToSpecificUser", userId, message);
-    } catch (e) {
-      console.log(e);
-    }
-  } else {
-    alert("No connection to server yet.");
-  }
-};
 
-export { startConnection, stopConnection, sendMessage, sendToSpecificUser };
+export { startConnection, stopConnection, sendMessage };

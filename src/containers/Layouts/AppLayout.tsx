@@ -1,9 +1,14 @@
 import * as React from "react";
 import { HeaderBar, Sidebar } from "components";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { Flex, VStack } from "@chakra-ui/react";
+import { useAuth } from "contexts";
 
 function AppLayout() {
+  const { userInfor } = useAuth();
+
+  if (!userInfor) return <Navigate to="/login" />;
+
   return (
     <Flex w="100vw" h="100vh">
       <Sidebar />

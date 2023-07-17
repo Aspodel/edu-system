@@ -21,7 +21,6 @@ import ScheduleRecommendation from "./ScheduleRecommendation";
 import { usePagination, useToast } from "hooks";
 import { useAuth } from "contexts";
 import { StudentService } from "services/StudentService";
-import { set } from "react-hook-form";
 
 function CourseRegistrationPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -250,7 +249,9 @@ function CourseRegistrationPage() {
               <Tr>
                 <Th>Code</Th>
                 <Th w="470px">Course</Th>
-                <Th isNumeric>Credits</Th>
+                <Th>Day</Th>
+                <Th isNumeric>Start</Th>
+                <Th isNumeric>End</Th>
                 <Th isNumeric>Slots</Th>
                 <Th>Status</Th>
               </Tr>
@@ -279,13 +280,12 @@ function CourseRegistrationPage() {
                           ?.name
                       }
                     </Td>
+                    <Td w="125px">{WEEKDAYS[cla.day - 1]}</Td>
+                    <Td isNumeric>{cla.startTime}</Td>
+                    <Td isNumeric>{cla.endTime}</Td>
                     <Td isNumeric>
-                      {
-                        courses.find((course) => course.id == cla.courseId)
-                          ?.credits
-                      }
+                      {cla.slot - cla.students.length}/{cla.slot}
                     </Td>
-                    <Td isNumeric>{cla.slot}</Td>
                     <Td>
                       {originalClasses.includes(classId) ? "Saved" : "Unsaved"}
                     </Td>
